@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block pagecontent %}
+<div class="jumbotron page-title">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<h1>Sign Up</h1>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<div class="container signup">
+	<form method="post" id="form_signup">
+		{% csrf_token %}
+		{% comment %} {% for field in form %} {% endcomment %}
+		<div class="form-row">
+			<div class="form-group col-sm-6">
+				<label for="inputUsername">Username</label>
+				<input style="text-transform: none" type="username" id="inputUsername" class="form-control" name="username" placeholder="Username">
+			</div>
+
+			<div class="form-group col-sm-6">
+				<label for="inputEmail">Email</label>
+				<input style="text-transform: none" type="email" class="form-control" id="inputEmail" name="email" placeholder="Email Address">
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group col-sm-6">
+				<label for="inputPass">Password</label>
+				<input style="text-transform: none" type="password" class="form-control" id="inputPass" name="password" placeholder="Password">
+			</div>
+
+			<div class="form-group col-sm-6">
+				<label for="inputConf">Confirm Password</label>
+				<input style="text-transform: none" type="password" class="form-control" id="inputConf" name="confirm_password" placeholder="Confirm Password">
+			</div>
+		</div>
+
+		<br>
+		<br>
+		<button type="submit" class="btn btn-primary">Sign Up</button>
+		<div class="form-group">
+			Already have an account? Login <a href="{% url 'signin' %}">here</a>.
+		</div>
+	</form>
+</div>
+{% endblock %}

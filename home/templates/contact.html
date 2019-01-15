@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block pagecontent %}
+<div class="container">
+	<h1 class="h00-mktg text-center lh-condensed mb-3 pt-big">
+		Contact Us
+	</h1>
+
+	<p class="lead-mktg text-gray mb-6 col-md-9-text mx-auto text-center">
+		Let us know if you have any questions or problems.
+	</p>
+
+	
+	<div class="row">
+		<div class="col-sm-6 col-sm-offset-3">
+			<p class="text-center">
+				Any questions or concerns?
+				<a href="mailto:dex.app.service@gmail.com">dex.app.service@gmail.com</a>
+			</p>
+
+			<div>
+				<form action="{% url 'contact' %}" class="mt-4" method="POST">
+					{% csrf_token %}
+					<dl class="form-group">
+						<dt class="input-label">
+							<label placeholder="" for="form_name">Name</label>
+						</dt>
+
+						<dd>
+							<input placeholder="Your name" class="form-control" type="text" name="firstname" id="form_name">
+						</dd>
+					</dl>
+
+					<br>
+
+					<dl class="form-group">
+						<dt class="input-label">
+							<label for="form_email">Email</label>
+						</dt>
+
+						<dd>
+							<input class="form-control" id="form_email" required="" name="form[email]" placeholder="Your email address" size="30" type="email" value="">
+						</dd>
+					</dl>
+
+					<br>
+
+					<dl class="form-group js-write-bucket">
+						<dt>
+							<label for="form_comments">How can we help?</label>
+						</dt>
+
+						<dd>
+							<textarea name="form[comments]" id="form_comments" placeholder="Please describe exactly what you’re trying to accomplish." required="required" class="form-control input-block js-comment-field js-quick-submit"></textarea>
+						</dd>
+					</dl>
+
+					<br>
+					<br>
+
+					<div class="form-actions">
+						<button type="submit" class="btn btn-primary" data-disable-with="Send request" data-ga-click="Support, send request, link:send-button" data-disable-invalid="">Send request</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

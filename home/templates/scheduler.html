@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block pagecontent %}
+<script>
+	window.csrf_token = '{% csrf_token %}';
+</script>
+
+<div class="container-flex center-text">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>{{courtObject.0.C_Name}}</h1>
+			<h3 class="color-grey">Current number of people at this court: {{courtObject.0.current_count}}	(Please be aware this number only updates upon refresh)</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-6 color-grey">
+			<h2>Your Signup Times</h2>
+		</div>
+		<div class="col-sm-6 color-grey">
+			<h2>Availability and Heatmap</h2>
+		</div>
+	</div>
+</div>
+
+<div id="wrapper" class="container" onload="createTable(6, 0, '10/15/2018', 5)">
+	<div class="row table-row">
+		<div class="col-sm-6" id="user_table_container" style="margin: 0 auto;">
+		</div>
+		<div class="col-sm-6" id="availability_table_container" style="margin: 0 auto;">
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	The left side represents when you plan to go to this court. You can either click or drag to select multiple times and boxes. <br>
+	<br>
+	The right side represents a heat map of when other people plan to go. A blacked out box represents the court is reserved for a private event.
+</div>
+
+<script type="text/javascript">
+	function replaceAll(str, find, replace) {
+		return str.replace(new RegExp(find, 'g'), replace);
+	}
+
+	var days = "{{ days }}"
+	var date = "{{ date }}"
+	var court = "{{ court }}"
+	var facility = "{{ facility }}"
+	var json_list = "{{ json_list }}"
+	var aJson_list = "{{ aJson_list }}"
+	var json_court_availability = "{{ json_court_availability }}"
+
+	json_list = replaceAll(json_list, '&quot;', '"')
+	aJson_list = replaceAll(aJson_list, '&quot;', '"')
+	json_court_availability = replaceAll(json_court_availability, '&quot;', '"')
+	json_court_availability = replaceAll(json_court_availability, "'", '"')
+
+	facility = replaceAll(facility, '&#39;', "'")
+	facility = replaceAll(facility, '&amp;', "&")
+
+	json_court_availability = replaceAll(json_court_availability, '&#39;', '"')
+	json_court_availability = replaceAll(json_court_availability, '&amp;', "&")
+	json_court_availability = replaceAll(json_court_availability, 'True', "true")
+	json_court_availability = replaceAll(json_court_availability, 'False', "false")
+
+	var times = $.parseJSON(json_list)
+	var aTimes = $.parseJSON(aJson_list)
+	var court_availability = $.parseJSON(json_court_availability)
+
+	createTable(6, 0, date, days, court, facility, times, aTimes, court_availability);
+</script>
+{% endblock %}

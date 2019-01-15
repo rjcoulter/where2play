@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block pagecontent %}
+	<div class="jumbotron page-title">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<h1>Login</h1>
+				</div>
+			</div>
+		</div>
+	</div>`
+    <div class="container login">
+		<form method="post">
+				{% csrf_token %}
+				{{ form }}
+				<button type="submit" class="btn btn-primary">Sign In</button>
+		</form>
+		{% comment %} <div class="row form-group">
+			<center>
+				Don't have an account? Signup <a href="{% url 'signup' %}">here</a>.
+			</center>
+		</div>
+		<form action="#" class = "signin-form">
+			<div class="row form-group">
+				<center>
+			 		<input type="email" class="email" name="email" placeholder="user@example.com">
+
+			 		<input type="password" class="password" name="password" placeholder="Password">
+				</center>
+			</div>
+			<div class="row form-group">
+				<center>
+			 		<input type="submit" class="btn btn-danger" value="Login">
+				</center>
+			</div>
+		</form> {% endcomment %}
+	</div>
+{% endblock %}

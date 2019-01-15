@@ -1,0 +1,7 @@
+<label for="inputType">Court</label>
+<select class="form-control" id="court" name="court">
+	<option disabled="disabled" selected="selected">Select a court</option>
+	{% for court in courts %}
+	<option value="{{ court.pk }}">{{ court.C_Name }}</option>
+	{% endfor %}
+</select>

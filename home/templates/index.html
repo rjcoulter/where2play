@@ -1,0 +1,326 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Home{% endblock %}
+{% block pagecontent %}
+
+<div class="jumbotron">
+	<div class="container">
+		<h1>Find A Court:</h1>
+
+		<div>
+			Most people wait until the last minute to find out if a court is taken. Don't wait until the last minute.
+		</div>
+
+		<form action="/scheduler/" method="post" id="availability_form">
+			{% csrf_token %}
+			<div class="form-row">
+
+				<div class="form-group col-md-6" id="facility_selection">
+					<label for="facility">Facility</label>
+					<select class="form-control" id="facility" name="facility">
+						<option disabled="disabled" selected="selected">Select an option</option>
+						{% for facility in facilities %}
+						<option class="form-control">{{ facility.F_Name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+
+				<div class="form-group col-md-6" id="court_selection" data_courts_url="{% url 'ajax_load_courts' %}">
+					<label for="court">Court</label>
+					<select class="form-control" id="court" name="court">
+						<option disabled="disabled" selected="selected" class="form-control">Select a facility first</option>
+					</select>
+				</div>
+
+			</div>
+
+			<div class="form-row">
+
+				<div class="col-md-6">
+					<label for="date">DATE</label>
+					<input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text" />
+				</div>
+
+				<div class="col-md-6">
+					<label for="days">HOW MANY DAYS WOULD YOU LIKE TO SEE?</label>
+					<input class="form-control" id="days" name="days" placeholder="1" type="number" value="1" min="1" max="30" />
+				</div>
+
+			</div>
+		</form>
+
+		<a class="signup-btn submit" id="submit-button" href="#" style="pointer-events: none;">CHECK AVAILABILITY</a>
+
+	</div>
+</div>
+
+<div class="type-picker-container">
+	<div class="picker-individual selected" id="choose_gyms" onclick="choose_gyms"> Gyms </div>
+	<div class="picker-individual" id="choose_other" onclick="choose_other"> Other Facilities </div>
+	<div class="picker-individual" id="choose_fields" onclick="choose_fields"> Fields and Parks </div>
+</div>
+
+<div id="gyms-div">
+	<div class="site-div">
+		<h2 align="center" style="color:white;">
+			{% for g in Gym %}
+			<div class="facility-parent">
+				<div id="accordion">
+					<a class="collapsed" data-toggle="collapse" data-target="#{{g.name_no_space}}" aria-expanded="true" aria-controls="collapseOne">
+						<div class="facility-container">
+							<div class="facility-container-fields">{{ g.F_Name }}</div>
+							<div class="facility-container-fields">
+								<div>{{ g.Location }}</div>
+							</div>
+						</div>
+						<div style="width: 40%; height: auto; margin: auto;">
+							<img src="/static/images/down-arrow.png" id="down-arrow" style="cursor: pointer;" />
+						</div>
+					</a>
+					<div id="{{g.name_no_space}}" class="collapse">
+						<div class="extra-information-container">
+							<div class="description-container">
+								<div style="text-decoration:underline;">Description</div>
+								{{g.Description}}
+							</div>
+							<div class="facility-container" style="font-size: 70%;">
+								<div class="facility-container-fields">
+									<div>Hours: {{g.Facility_Hours}}</div>
+									<div>Phone Number: {{g.Facility_Phone}}</div>
+								</div>
+								<div class="facility-container-fields">
+									Parking Hours: {{g.Parking_Hours}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</h2>
+	</div>
+</div>
+
+<div style="display:none;" id="others-div">
+	<div class="others-div">
+		<h2 align="center" style="color:white;">
+			{% for o in Others %}
+			<div class="facility-parent">
+				<div id="accordion">
+					<a class="collapsed" data-toggle="collapse" data-target="#{{o.name_no_space}}" aria-expanded="true" aria-controls="collapseOne">
+						<div class="facility-container">
+							<div class="facility-container-fields">{{ o.F_Name }}</div>
+							<div class="facility-container-fields">
+								<div>{{ o.Location }}</div>
+							</div>
+						</div>
+						<div style="width: 40%; height: auto; margin: auto;">
+							<img src="/static/images/down-arrow.png" id="down-arrow" style="cursor: pointer;" />
+						</div>
+					</a>
+					<div id="{{o.name_no_space}}" class="collapse">
+						<div class="extra-information-container">
+							<div class="description-container">
+								<div style="text-decoration:underline;">Description</div>
+								{{o.Description}}
+							</div>
+							<div class="facility-container" style="font-size: 70%;">
+								<div class="facility-container-fields">
+									<div>Hours: {{o.Facility_Hours}}</div>
+									<div>Phone Number: {{o.Facility_Phone}}</div>
+								</div>
+								<div class="facility-container-fields">
+									Parking Hours: {{o.Parking_Hours}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</h2>
+	</div>
+</div>
+
+<div style="display:none;" id="outdoors-div">
+	<div class="outdoors-div">
+		<h2 align="center" style="color:white;">
+			{% for out in Outdoors %}
+			<div class="facility-parent">
+				<div id="accordion">
+					<a class="collapsed" data-toggle="collapse" data-target="#{{out.name_no_space}}" aria-expanded="true"
+					 aria-controls="collapseOne">
+						<div class="facility-container">
+							<div class="facility-container-fields">{{ out.F_Name }}</div>
+							<div class="facility-container-fields">
+								<div>{{ out.Location }}</div>
+							</div>
+						</div>
+						<div style="width: 40%; height: auto; margin: auto;">
+							<img src="/static/images/down-arrow.png" id="down-arrow" style="cursor: pointer;" />
+						</div>
+					</a>
+					<div id="{{out.name_no_space}}" class="collapse">
+						<div class="extra-information-container">
+							<div class="description-container">
+								<div style="text-decoration:underline;">Description</div>
+								{{out.Description}}
+							</div>
+							<div class="facility-container" style="font-size: 70%;">
+								<div class="facility-container-fields">
+									<div>Hours: {{out.Facility_Hours}}</div>
+									<div>Phone Number: {{out.Facility_Phone}}</div>
+								</div>
+								<div class="facility-container-fields">
+									Parking Hours: {{out.Parking_Hours}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</h2>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function () {
+		$("#submit-button").removeClass('submit');
+		$("#submit-button").addClass('hold');
+		var date_input = $('input[name="date"]'); //our date input has the name "date"
+		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+		var options = {
+			format: 'mm/dd/yyyy',
+			container: container,
+			todayHighlight: true,
+			autoclose: true,
+		};
+		date_input.datepicker(options);
+	})
+</script>
+
+<script>
+	$("#facility_selection").change(function () {
+		var url = $("#court_selection").attr("data_courts_url");
+		var facility = $("#facility_selection").find(":selected").text();
+		$.ajax({
+			url: url,
+			type: "GET",
+			data: { "facility": facility },
+			success: function (data) {
+				$("#court_selection").html(data);
+			}
+		});
+
+	});
+
+	$("#availability_form").change(function () {
+		var facility = $("#facility_selection").find(":selected").text();
+		var court = $("#court_selection").find(":selected").text();
+		var date = $("#date")[0].value
+		if (facility !== "Select an option" && court !== "Select a facility first" && court !== "Select a court" && date !== "") {
+			$("#submit-button").removeClass('hold');
+			$("#submit-button").addClass('submit');
+			$("#submit-button")[0].style.pointerEvents = ""
+		}
+		else {
+			$("#submit-button").removeClass('submit');
+			$("#submit-button").addClass('hold');
+			$("#submit-button")[0].style.pointerEvents = "none"
+		}
+	});
+</script>
+
+<script>
+	var outdoors = document.getElementById('outdoors');
+	var others = document.getElementById('others');
+	var gyms = document.getElementById('gyms');
+	var outdoorsdiv = document.getElementById('outdoors-div');
+	var othersdiv = document.getElementById('others-div');
+	var gymsdiv = document.getElementById('gyms-div');
+	var choose_gyms = document.getElementById('choose_gyms')
+	var choose_other = document.getElementById('choose_other')
+	var choose_fields = document.getElementById('choose_fields')
+
+	choose_gyms.onclick = function () {
+		$("#choose_gyms").addClass('selected');
+		$("#choose_other").removeClass('selected');
+		$("#choose_fields").removeClass('selected');
+		outdoorsdiv.style.display = "none";
+		othersdiv.style.display = "none";
+		gymsdiv.style.display = "block";
+	}
+
+	choose_other.onclick = function () {
+		$("#choose_other").addClass('selected');
+		$("#choose_gyms").removeClass('selected');
+		$("#choose_fields").removeClass('selected');
+		outdoorsdiv.style.display = "none";
+		gymsdiv.style.display = "none";
+		othersdiv.style.display = "block";
+	}
+
+	choose_fields.onclick = function () {
+		$("#choose_fields").addClass('selected');
+		$("#choose_other").removeClass('selected');
+		$("#choose_gyms").removeClass('selected');
+		gymsdiv.style.display = "none";
+		othersdiv.style.display = "none";
+		outdoorsdiv.style.display = "block";
+	}
+
+	outdoors.onclick = function () {
+		if (outdoors.classList.contains('active-pill')) {
+		}
+		if (others.classList.contains('active-pill')) {
+			others.classList.remove('active-pill')
+			outdoors.classList.add('active-pill')
+			othersdiv.style.display = "none";
+			outdoorsdiv.style.display = "block";
+		}
+		if (gyms.classList.contains('active-pill')) {
+			gyms.classList.remove('active-pill')
+			outdoors.classList.add('active-pill')
+			gymsdiv.style.display = "none";
+			outdoorsdiv.style.display = "block";
+		}
+	}
+
+	others.onclick = function () {
+		if (others.classList.contains('active-pill')) {
+		}
+		if (outdoors.classList.contains('active-pill')) {
+			outdoors.classList.remove('active-pill')
+			others.classList.add('active-pill')
+			outdoorsdiv.style.display = "none";
+			othersdiv.style.display = "block";
+		}
+		if (gyms.classList.contains('active-pill')) {
+			gyms.classList.remove('active-pill')
+			others.classList.add('active-pill')
+			gymsdiv.style.display = "none";
+			othersdiv.style.display = "block";
+		}
+	}
+
+	gyms.onclick = function () {
+		if (gyms.classList.contains('active-pill')) {
+		}
+		if (outdoors.classList.contains('active-pill')) {
+			outdoors.classList.remove('active-pill')
+			gyms.classList.add('active-pill')
+			outdoorsdiv.style.display = "none";
+			gymsdiv.style.display = "block";
+		}
+		if (others.classList.contains('active-pill')) {
+			others.classList.remove('active-pill')
+			gyms.classList.add('active-pill')
+			othersdiv.style.display = "none";
+			gymsdiv.style.display = "block";
+		}
+	}
+</script>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block pagecontent %}
+<script>
+	window.csrf_token = '{% csrf_token %}';
+</script>
+
+<div id="wrapper" class="container" onload="createTable(6, 0, '10/15/2018', 5)">
+	<div class="row table-row">
+		<div class="col-sm-6" id="user_table_container" style="margin: 0 auto;">
+		</div>
+		<div class="col-sm-6" id="availability_table_container" style="margin: 0 auto;">
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function replaceAll(str, find, replace) {
+		return str.replace(new RegExp(find, 'g'), replace);
+	}
+
+	var days = "{{ days }}"
+	var date = "{{ date }}"
+	var court = "{{ court }}"
+	var facility = "{{ facility }}"
+	var aJson_list = "{{ aJson_list }}"
+
+	aJson_list = replaceAll(aJson_list, '&quot;', '"')
+
+	facility = replaceAll(facility, '&#39;', "'")
+	facility = replaceAll(facility, '&amp;', "&")
+
+	var aTimes = $.parseJSON(aJson_list)
+
+	createAvailabilityTable(6, 0, date, days, court, facility, aTimes);
+</script>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}About Us{% endblock %}
+
+{% block pagecontent %}
+	<div class="jumbotron page-title">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<h1>About Us</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<div class="container full-height-container about-us">
+		<div class="row">
+			<div class="col-sm-4">
+				<img src="{% static 'images/uva.png' %}" class="fill-col-img">
+			</div>
+			<div class="col-sm-8">
+				<h2>Who Are We?</h2>
+			    <p>
+				We are a group of students at the University of Virginia looking to make it easier to use athletic facilities around grounds.
+			    </p>
+			   
+			    <p>
+				This website allows students to see all of the athletic facilities on grounds, and relevant information about them such as their hours of operation and address.  Users will be able to see what time others planning on using all of the courts on grounds.
+			    </p>
+			</div>
+		</div>
+	</div>
+{% endblock %}
