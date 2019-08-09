@@ -14,7 +14,7 @@ This site can be reached at the url (<https://r2d2-scheduler.herokuapp.com/>)
 * [Travis-CI](https://travis-ci.com/) -  Continuous Integration Service
 * [Heroku](https://www.heroku.com/) - Cloud Platform Service
 
-## Team Members
+## Team 
 
 * **Ryan Coulter** - [github](https://github.com/rjcoulter)
 * **Jack Short** - [github](https://github.com/JackShort)
